@@ -21,6 +21,7 @@ type Client struct {
 	httpClient  *http.Client
 	baseURL     string
 
+	Media    *MediaProvider
 	Projects *ProjectsProvider
 }
 
@@ -38,6 +39,7 @@ func NewClient(httpClient *http.Client, accessToken string) *Client {
 		httpClient:  httpClient,
 		baseURL:     defaultBaseURL,
 	}
+	client.Media = &MediaProvider{client}
 	client.Projects = &ProjectsProvider{client}
 	return client
 }
@@ -88,9 +90,11 @@ func (c *Client) doRequest(req *http.Request, body interface{}, responseType int
 		return resp, fmt.Errorf("the Wistia API responded with status %d and body %s", resp.StatusCode, string(respBody))
 	}
 
-	err = json.NewDecoder(resp.Body).Decode(responseType)
-	if err != nil {
-		return resp, fmt.Errorf("failed to decode JSON from response body: %s", err)
+	if responseType != nil {
+		err = json.NewDecoder(resp.Body).Decode(responseType)
+		if err != nil {
+			return resp, fmt.Errorf("failed to decode JSON from response body: %s", err)
+		}
 	}
 
 	return resp, nil

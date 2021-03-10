@@ -25,6 +25,7 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
+			"wistia_media":   mediaResource(),
 			"wistia_project": projectResource(),
 		},
 	}
