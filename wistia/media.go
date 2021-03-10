@@ -60,32 +60,32 @@ func (mp *MediaProvider) CreateFromReader(ctx context.Context, m *Media, r io.Re
 	req.Body = pipeReader
 
 	go func() {
-		defer pipeWriter.Close()
-		defer multipartWriter.Close()
+		defer func() { _ = pipeWriter.Close() }()
+		defer func() { _ = multipartWriter.Close() }()
 
 		if err := multipartWriter.WriteField("name", m.Name); err != nil {
-			fmt.Fprintf(os.Stderr, "error creating name field: %s", err)
+			_, _ = fmt.Fprintf(os.Stderr, "error creating name field: %s", err)
 			return
 		}
 		if err := multipartWriter.WriteField("description", m.Description); err != nil {
-			fmt.Fprintf(os.Stderr, "error creating description field: %s", err)
+			_, _ = fmt.Fprintf(os.Stderr, "error creating description field: %s", err)
 			return
 		}
 		if err := multipartWriter.WriteField("project_id", m.Project.HashedId); err != nil {
-			fmt.Fprintf(os.Stderr, "error creating project_id field: %s", err)
+			_, _ = fmt.Fprintf(os.Stderr, "error creating project_id field: %s", err)
 			return
 		}
 		if err := multipartWriter.WriteField("access_token", mp.client.accessToken); err != nil {
-			fmt.Fprintf(os.Stderr, "error creating access token field: %s", err)
+			_, _ = fmt.Fprintf(os.Stderr, "error creating access token field: %s", err)
 			return
 		}
 		formFile, err := multipartWriter.CreateFormFile("file", filename)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "error creating form file: %s", err)
+			_, _ = fmt.Fprintf(os.Stderr, "error creating form file: %s", err)
 			return
 		}
 		if _, err := io.Copy(formFile, r); err != nil {
-			fmt.Fprintf(os.Stderr, "error during copy: %s", err)
+			_, _ = fmt.Fprintf(os.Stderr, "error during copy: %s", err)
 			return
 		}
 	}()
@@ -102,8 +102,8 @@ func (mp *MediaProvider) CreateFromReader(ctx context.Context, m *Media, r io.Re
 		return nil, fmt.Errorf("the Wistia API responded with an error while creating the media: %s", body)
 	}
 	defer func() {
-		io.Copy(ioutil.Discard, resp.Body)
-		resp.Body.Close()
+		_, _ = io.Copy(ioutil.Discard, resp.Body)
+		_ = resp.Body.Close()
 	}()
 
 	createdMedia := &Media{}
@@ -135,8 +135,8 @@ func (mp *MediaProvider) CreateFromURL(ctx context.Context, m *Media, sourceAsse
 		return nil, err
 	}
 	defer func() {
-		io.Copy(ioutil.Discard, resp.Body)
-		resp.Body.Close()
+		_, _ = io.Copy(ioutil.Discard, resp.Body)
+		_ = resp.Body.Close()
 	}()
 	if resp.StatusCode >= http.StatusBadRequest {
 		body, err := ioutil.ReadAll(resp.Body)
@@ -156,8 +156,8 @@ func (mp *MediaProvider) CreateFromURL(ctx context.Context, m *Media, sourceAsse
 
 func (mp *MediaProvider) Get(ctx context.Context, id string) (*Media, error) {
 	media := &Media{}
-	url := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", id)
-	_, err := mp.client.request(ctx, http.MethodGet, url, nil, media)
+	apiUrl := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", id)
+	_, err := mp.client.request(ctx, http.MethodGet, apiUrl, nil, media)
 	if err != nil {
 		return nil, err
 	}
@@ -165,9 +165,9 @@ func (mp *MediaProvider) Get(ctx context.Context, id string) (*Media, error) {
 }
 
 func (mp *MediaProvider) Update(ctx context.Context, m *Media) (*Media, error) {
-	url := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", m.HashedId)
+	apiUrl := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", m.HashedId)
 	updatedMedia := &Media{}
-	_, err := mp.client.request(ctx, http.MethodPut, url, m, updatedMedia)
+	_, err := mp.client.request(ctx, http.MethodPut, apiUrl, m, updatedMedia)
 	if err != nil {
 		return nil, err
 	}
@@ -175,8 +175,8 @@ func (mp *MediaProvider) Update(ctx context.Context, m *Media) (*Media, error) {
 }
 
 func (mp *MediaProvider) Delete(ctx context.Context, m *Media) error {
-	url := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", m.HashedId)
-	_, err := mp.client.request(ctx, http.MethodDelete, url, nil, nil)
+	apiUrl := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", m.HashedId)
+	_, err := mp.client.request(ctx, http.MethodDelete, apiUrl, nil, nil)
 	if err != nil {
 		return err
 	}
