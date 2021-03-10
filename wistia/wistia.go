@@ -77,8 +77,8 @@ func (c *Client) doRequest(req *http.Request, body interface{}, responseType int
 		return nil, err
 	}
 	defer func() {
-		io.Copy(ioutil.Discard, resp.Body)
-		resp.Body.Close()
+		_, _ = io.Copy(ioutil.Discard, resp.Body)
+		_ = resp.Body.Close()
 	}()
 	log.Printf("[TRACE] API response: %v", resp)
 
