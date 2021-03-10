@@ -32,3 +32,6 @@ cd examples
 terraform init
 WISTIA_ACCESS_TOKEN="your access token goes here" terraform plan
 ```
+
+The video files aren't included in this repository, so you'll need to edit the file paths to point at something on your
+computer or upload by URL instead.
