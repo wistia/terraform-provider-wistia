@@ -12,14 +12,17 @@ import (
 )
 
 const (
-	defaultBaseURL   = "https://api.wistia.st/v1/"
-	defaultUserAgent = "wistia-go-client/1.0"
+	defaultAPIEndpoint    = "https://api.wistia.com/v1/"
+	defaultUploadEndpoint = "https://upload.wistia.com/"
+	defaultUserAgent      = "wistia-go-client/1.0"
 )
 
 type Client struct {
 	accessToken string // TODO: use oauth2 package?
 	httpClient  *http.Client
-	baseURL     string
+
+	APIBaseEndpoint    string
+	UploadBaseEndpoint string
 
 	Media    *MediaProvider
 	Projects *ProjectsProvider
@@ -35,9 +38,10 @@ func NewClient(httpClient *http.Client, accessToken string) *Client {
 	}
 
 	client := &Client{
-		accessToken: accessToken,
-		httpClient:  httpClient,
-		baseURL:     defaultBaseURL,
+		accessToken:        accessToken,
+		httpClient:         httpClient,
+		APIBaseEndpoint:    defaultAPIEndpoint,
+		UploadBaseEndpoint: defaultUploadEndpoint,
 	}
 	client.Media = &MediaProvider{client}
 	client.Projects = &ProjectsProvider{client}

@@ -48,8 +48,7 @@ type Media struct {
 }
 
 func (mp *MediaProvider) CreateFromReader(ctx context.Context, m *Media, r io.Reader, filename string) (*Media, error) {
-	url := "https://upload-v2.wistia.st"
-	req, err := mp.client.newRequest(ctx, http.MethodPost, url)
+	req, err := mp.client.newRequest(ctx, http.MethodPost, mp.client.UploadBaseEndpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -116,8 +115,7 @@ func (mp *MediaProvider) CreateFromReader(ctx context.Context, m *Media, r io.Re
 }
 
 func (mp *MediaProvider) CreateFromURL(ctx context.Context, m *Media, sourceAssetUrl string) (*Media, error) {
-	// TODO: Change endpoint based on environment
-	req, err := mp.client.newRequest(ctx, http.MethodPost, "https://upload-v2.wistia.st")
+	req, err := mp.client.newRequest(ctx, http.MethodPost, mp.client.UploadBaseEndpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +156,7 @@ func (mp *MediaProvider) CreateFromURL(ctx context.Context, m *Media, sourceAsse
 
 func (mp *MediaProvider) Get(ctx context.Context, id string) (*Media, error) {
 	media := &Media{}
-	url := mp.client.baseURL + fmt.Sprintf("medias/%s.json", id)
+	url := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", id)
 	_, err := mp.client.request(ctx, http.MethodGet, url, nil, media)
 	if err != nil {
 		return nil, err
@@ -167,7 +165,7 @@ func (mp *MediaProvider) Get(ctx context.Context, id string) (*Media, error) {
 }
 
 func (mp *MediaProvider) Update(ctx context.Context, m *Media) (*Media, error) {
-	url := mp.client.baseURL + fmt.Sprintf("medias/%s.json", m.HashedId)
+	url := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", m.HashedId)
 	updatedMedia := &Media{}
 	_, err := mp.client.request(ctx, http.MethodPut, url, m, updatedMedia)
 	if err != nil {
@@ -177,7 +175,7 @@ func (mp *MediaProvider) Update(ctx context.Context, m *Media) (*Media, error) {
 }
 
 func (mp *MediaProvider) Delete(ctx context.Context, m *Media) error {
-	url := mp.client.baseURL + fmt.Sprintf("medias/%s.json", m.HashedId)
+	url := mp.client.APIBaseEndpoint + fmt.Sprintf("medias/%s.json", m.HashedId)
 	_, err := mp.client.request(ctx, http.MethodDelete, url, nil, nil)
 	if err != nil {
 		return err
