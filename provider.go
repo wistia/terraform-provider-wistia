@@ -15,13 +15,13 @@ func Provider() *schema.Provider {
 				Type:        schema.TypeString,
 				Required:    true,
 				DefaultFunc: schema.EnvDefaultFunc("WISTIA_ACCESS_TOKEN", nil),
-				Description: "Wistia access token",
+				Description: "Wistia access token with read, update, delete, and upload permissions",
 			},
 			"environment": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("WISTIA_ENV", "production"),
-				Description: "Wistia environment to use",
+				Description: "Wistia environment to use [production (default), staging]",
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
