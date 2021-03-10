@@ -43,22 +43,33 @@ func NewClient(httpClient *http.Client, accessToken string) *Client {
 }
 
 func (c *Client) request(ctx context.Context, method, url string, body interface{}, responseType interface{}) (*http.Response, error) {
-	payload, err := json.Marshal(body)
+	req, err := c.newRequest(ctx, method, url)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't marshal json for project: %s", err)
+		return nil, err
 	}
-	log.Printf("[TRACE] Request body: %s", string(payload))
+	return c.doRequest(req.WithContext(ctx), body, responseType)
+}
 
-	req, err := http.NewRequestWithContext(ctx, method, url, bytes.NewReader(payload))
+func (c *Client) newRequest(ctx context.Context, method, url string) (*http.Request, error) {
+	req, err := http.NewRequestWithContext(ctx, method, url, nil)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("Authorization", "Bearer "+c.accessToken)
+	req.Header.Set("User-Agent", defaultUserAgent)
+	return req, nil
+}
+
+func (c *Client) doRequest(req *http.Request, body interface{}, responseType interface{}) (*http.Response, error) {
 	if body != nil {
 		req.Header.Set("Content-type", "application/json")
+		payload, err := json.Marshal(body)
+		if err != nil {
+			return nil, fmt.Errorf("couldn't marshal json for body: %s", err)
+		}
+		log.Printf("[TRACE] Request body: %s", string(payload))
+		req.Body = ioutil.NopCloser(bytes.NewReader(payload))
 	}
-	req.Header.Set("User-Agent", defaultUserAgent)
-
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
