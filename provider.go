@@ -10,6 +10,10 @@ import (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ConfigureFunc: configureProvider,
+		ResourcesMap: map[string]*schema.Resource{
+			"wistia_media":   mediaResource(),
+			"wistia_project": projectResource(),
+		},
 		Schema: map[string]*schema.Schema{
 			"access_token": {
 				Type:        schema.TypeString,
@@ -23,10 +27,6 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("WISTIA_ENV", "production"),
 				Description: "Wistia environment to use [production (default), staging]",
 			},
-		},
-		ResourcesMap: map[string]*schema.Resource{
-			"wistia_media":   mediaResource(),
-			"wistia_project": projectResource(),
 		},
 	}
 }
