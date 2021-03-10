@@ -18,10 +18,6 @@ func projectResource() *schema.Resource {
 		//Exists: isProject,
 
 		Schema: map[string]*schema.Schema{
-			"project_id": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
 			"name": {
 				Type:     schema.TypeString,
 				Required: true,
@@ -124,7 +120,6 @@ func deleteProject(d *schema.ResourceData, m interface{}) error {
 
 func applyProjectFieldsToResource(p *wistia.Project, d *schema.ResourceData) {
 	d.SetId(p.HashedId)
-	d.Set("project_id", p.Id)
 	d.Set("name", p.Name)
 	d.Set("description", p.Description)
 	d.Set("media_count", p.MediaCount)
@@ -139,7 +134,6 @@ func applyProjectFieldsToResource(p *wistia.Project, d *schema.ResourceData) {
 
 func projectFromResource(d *schema.ResourceData) *wistia.Project {
 	return &wistia.Project{
-		Id:                           d.Get("project_id").(int),
 		Name:                         d.Get("name").(string),
 		Description:                  d.Get("description").(string),
 		MediaCount:                   d.Get("media_count").(int),
