@@ -86,18 +86,20 @@ func (c *Client) doRequest(req *http.Request, body interface{}, responseType int
 		_, _ = io.Copy(ioutil.Discard, resp.Body)
 		_ = resp.Body.Close()
 	}()
-	log.Printf("[TRACE] API response: %v", resp)
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return resp, fmt.Errorf("failed to read response body: %s", err)
+	}
+
+	log.Printf("[TRACE] API response: %v; body: %s", resp, respBody)
 
 	if resp.StatusCode >= http.StatusBadRequest {
-		respBody, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return resp, fmt.Errorf("failed to read response body: %s", err)
-		}
 		return resp, fmt.Errorf("the Wistia API responded with status %d and body %s", resp.StatusCode, string(respBody))
 	}
 
 	if responseType != nil {
-		err = json.NewDecoder(resp.Body).Decode(responseType)
+		err = json.NewDecoder(bytes.NewReader(respBody)).Decode(responseType)
 		if err != nil {
 			return resp, fmt.Errorf("failed to decode JSON from response body: %s", err)
 		}
