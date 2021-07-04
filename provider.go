@@ -11,8 +11,9 @@ func Provider() *schema.Provider {
 	return &schema.Provider{
 		ConfigureFunc: configureProvider,
 		ResourcesMap: map[string]*schema.Resource{
-			"wistia_media":   mediaResource(),
-			"wistia_project": projectResource(),
+			"wistia_media":               mediaResource(),
+			"wistia_media_customization": customizationResource(),
+			"wistia_project":             projectResource(),
 		},
 		Schema: map[string]*schema.Schema{
 			"access_token": {

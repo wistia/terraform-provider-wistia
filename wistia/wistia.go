@@ -24,8 +24,9 @@ type Client struct {
 	APIBaseEndpoint    string
 	UploadBaseEndpoint string
 
-	Media    *MediaProvider
-	Projects *ProjectsProvider
+	Media          *MediaProvider
+	Projects       *ProjectsProvider
+	Customizations *CustomizationsProvider
 }
 
 type provider struct {
@@ -45,6 +46,7 @@ func NewClient(httpClient *http.Client, accessToken string) *Client {
 	}
 	client.Media = &MediaProvider{client}
 	client.Projects = &ProjectsProvider{client}
+	client.Customizations = &CustomizationsProvider{client}
 	return client
 }
 
