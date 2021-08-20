@@ -11,7 +11,7 @@ type ProjectsProvider provider
 type Project struct {
 	Name                         string `json:"name"`
 	Description                  string `json:"description"`
-	MediaCount                   int    `json:"media_count""`
+	MediaCount                   int    `json:"media_count"`
 	Created                      string `json:"created"`
 	Updated                      string `json:"updated"`
 	HashedId                     string `json:"hashedId"`

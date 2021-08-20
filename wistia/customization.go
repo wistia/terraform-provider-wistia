@@ -20,7 +20,7 @@ type Customization struct {
 	FullscreenButton              *string `json:"fullscreenButton"`
 	FullscreenOnRotateToLandscape *string `json:"fullscreenOnRotateToLandscape"`
 	GoogleAnalytics               *string `json:"googleAnalytics"`
-	Media                         Media  `json:"-"`
+	Media                         Media   `json:"-"`
 	Muted                         *string `json:"muted"`
 	PlaybackRateControl           *string `json:"playbackRateControl"`
 	Playbar                       *string `json:"playbar"`
