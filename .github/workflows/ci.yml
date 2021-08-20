@@ -32,11 +32,14 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        go-version: [ 1.14.x, 1.15.x, 1.16.x, 1.17.x ]
     steps:
-      - name: Set up Go 1.14
+      - name: Set up Go
         uses: actions/setup-go@v1
         with:
-          go-version: 1.14
+          go-version: ${{ matrix.go-version }}
       - name: Check out
         uses: actions/checkout@v2
       - name: Build
