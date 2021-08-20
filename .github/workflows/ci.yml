@@ -17,6 +17,13 @@ jobs:
           go-version: 1.17
       - name: Check out
         uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
       - name: Run gofmt
         shell: bash
         run: |
@@ -42,6 +49,13 @@ jobs:
           go-version: ${{ matrix.go-version }}
       - name: Check out
         uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
       - name: Build
         run: go build ./...
       - name: Test
