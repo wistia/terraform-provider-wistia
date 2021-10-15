@@ -47,6 +47,8 @@ jobs:
         uses: actions/setup-go@v1
         with:
           go-version: ${{ matrix.go-version }}
+      - name: Install just
+        uses: extractions/setup-just@aa5d15c144db4585980a44ebfdd2cf337c4f14cb # v1.4.0
       - name: Check out
         uses: actions/checkout@v2
       - uses: actions/cache@v2
@@ -58,6 +60,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Build
-        run: go build ./...
+        run: go build
       - name: Test
         run: go test ./...
+      - name: Test against Wistia API
+        run: |
+          set -e
+
+          just install linux_amd64
+
+          cd examples
+          terraform init
+          WISTIA_ACCESS_TOKEN="${{ secrets.READ_ONLY_TOKEN }}" terraform plan

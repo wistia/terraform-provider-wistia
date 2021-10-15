@@ -1,3 +1,13 @@
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    wistia = {
+      source  = "registry.wistia.io/wistia/wistia"
+      version = "0.0.1"
+    }
+  }
+}
+
 provider "wistia" {
   environment = "staging"
 }
