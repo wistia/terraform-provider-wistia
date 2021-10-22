@@ -1,8 +1,8 @@
-package main
+package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/wistia/terraform-provider-wistia/wistia"
+	"github.com/wistia/terraform-provider-wistia/internal/wistia"
 	"net/http"
 	"time"
 )
