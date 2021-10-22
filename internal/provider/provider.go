@@ -1,38 +1,42 @@
 package provider
 
 import (
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"context"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/wistia/terraform-provider-wistia/internal/wistia"
 	"net/http"
 	"time"
 )
 
-func Provider() *schema.Provider {
-	return &schema.Provider{
-		ConfigureFunc: configureProvider,
-		ResourcesMap: map[string]*schema.Resource{
-			"wistia_media":               mediaResource(),
-			"wistia_media_customization": customizationResource(),
-			"wistia_project":             projectResource(),
-		},
-		Schema: map[string]*schema.Schema{
-			"access_token": {
-				Type:        schema.TypeString,
-				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("WISTIA_ACCESS_TOKEN", nil),
-				Description: "Wistia access token with read, update, delete, and upload permissions",
+func New() func() *schema.Provider {
+	return func() *schema.Provider {
+		return &schema.Provider{
+			ConfigureContextFunc: configureProvider,
+			ResourcesMap: map[string]*schema.Resource{
+				"wistia_media":               mediaResource(),
+				"wistia_media_customization": customizationResource(),
+				"wistia_project":             projectResource(),
 			},
-			"environment": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("WISTIA_ENV", "production"),
-				Description: "Wistia environment to use [production (default), staging]",
+			Schema: map[string]*schema.Schema{
+				"access_token": {
+					Type:        schema.TypeString,
+					Required:    true,
+					DefaultFunc: schema.EnvDefaultFunc("WISTIA_ACCESS_TOKEN", nil),
+					Description: "Wistia access token with read, update, delete, and upload permissions",
+				},
+				"environment": {
+					Type:        schema.TypeString,
+					Optional:    true,
+					DefaultFunc: schema.EnvDefaultFunc("WISTIA_ENV", "production"),
+					Description: "Wistia environment to use [production (default), staging]",
+				},
 			},
-		},
+		}
 	}
 }
 
-func configureProvider(d *schema.ResourceData) (interface{}, error) {
+func configureProvider(_ context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	accessToken := d.Get("access_token").(string)
 	environment := d.Get("environment").(string)
 	httpClient := &http.Client{
