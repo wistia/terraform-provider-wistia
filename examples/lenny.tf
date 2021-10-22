@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "wistia" {
-  environment = "staging"
+  environment = "production"
 }
 
 resource "wistia_project" "my_first_terraformed_project" {
