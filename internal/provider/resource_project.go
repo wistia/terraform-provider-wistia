@@ -16,48 +16,59 @@ func projectResource() *schema.Resource {
 		Delete: deleteProject,
 		// TODO: Do we need this?
 		//Exists: isProject,
+		Description: "A Wistia project. See the [API documentation](https://wistia.com/support/developers/data-api#projects) for more details.",
 
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "The project's display name.",
 			},
 			// Exposed by the API but not supported by projects#create
 			"description": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The project's description.",
 			},
 			"media_count": {
-				Type:     schema.TypeInt,
-				Computed: true,
+				Type:        schema.TypeInt,
+				Computed:    true,
+				Description: "The number of different medias that have been uploaded to the project.",
 			},
 			"created": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The date that the project was originally created.",
 			},
 			"updated": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "TThe date that the project was last updated.",
 			},
 			"hashed_id": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "A private hashed ID, uniquely identifying the project within the system.",
 			},
 			"anonymous_can_upload": {
-				Type:     schema.TypeBool,
-				Optional: true,
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: "A boolean indicating whether or not anonymous uploads are enabled for the project.",
 			},
 			"anonymous_can_download": {
-				Type:     schema.TypeBool,
-				Optional: true,
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: "A boolean indicating whether or not anonymous downloads are enabled for the project.",
 			},
 			"public": {
-				Type:     schema.TypeBool,
-				Optional: true,
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: "A boolean indicating whether the project is available for public (anonymous) viewing.",
 			},
 			"public_id": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "If the project is public, this field contains a string representing the ID used for referencing the project in public URLs.",
 			},
 		},
 	}

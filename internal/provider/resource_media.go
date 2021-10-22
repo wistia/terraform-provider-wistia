@@ -18,76 +18,93 @@ func mediaResource() *schema.Resource {
 		Delete: deleteMedia,
 		// TODO: Do we need this?
 		//Exists: isMedia,
+		Description: "A Wistia media. See the [API documentation](https://wistia.com/support/developers/data-api#medias) for more details.",
 
 		Schema: map[string]*schema.Schema{
 			"file": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ExactlyOneOf: []string{"file", "url"},
+				Description:  "A path to a file on disk that will be uploaded to Wistia.",
 			},
 			"url": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ExactlyOneOf: []string{"file", "url"},
+				Description:  "A URL to a file that will be uploaded to Wistia.",
 			},
 			"media_id": {
-				Type:     schema.TypeInt,
-				Computed: true,
+				Type:        schema.TypeInt,
+				Computed:    true,
+				Description: "A unique numeric identifier for the media within the system.",
 			},
 			"name": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "The display name of the media.",
 			},
 			"project_id": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "The identifier for the Wistia project that will host this media.",
 			},
 			"type": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "A string representing what type of media this is. Values can be Video, Audio, Image, PdfDocument, MicrosoftOfficeDocument, Swf, or UnknownType.",
 			},
 			"status": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "Post upload processing status. There are four statuses: queued, processing, ready, and failed.",
 			},
 			"section": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The title of the section in which the media appears. This attribute is omitted if the media is not in a section (default).",
 			},
+			// TODO
 			//"thumbnail": {
-			//	Type:     schema.TypeMap,
-			//	Computed: true,
+			//	Type:        schema.TypeMap,
+			//	Computed:    true,
+			//  Description: "An object representing the thumbnail for this media. The attributes are URL, width, and height.
 			//},
 			"duration": {
-				Type:     schema.TypeFloat,
-				Computed: true,
+				Type:        schema.TypeFloat,
+				Computed:    true,
+				Description: "Specifies the length (in seconds) for audio and video files. Specifies the number of pages in the document. Omitted for other types of media.",
 			},
 			"created": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The date when the media was originally uploaded.",
 			},
 			"updated": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The date when the media was last changed.",
 			},
 			// TODO
 			//"assets": {
-			//	Type:     schema.TypeList,
-			//	Elem:     wistia.Asset{},
-			//	Computed: true,
+			//	Type:        schema.TypeList,
+			//	Elem:        wistia.Asset{},
+			//	Computed:    true,
+			//  Description: "An array of the assets available for this media.",
 			//},
 			//"embed_code": {
 			//	Type:       schema.TypeString,
 			//	Computed:   true,
-			//	Deprecated: "If you want to programmatically embed videos, follow the \"construct an embed code\" guide",
+			//	Deprecated: "If you want to programmatically embed videos, follow the \"construct an embed code\" guide.",
 			//},
 			"description": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The description for the media which usually appears near teh top of the sidebar on the media's page.",
 			},
 			"hashed_id": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "A unique alphanumeric identifier for this media.",
 			},
 		},
 	}
