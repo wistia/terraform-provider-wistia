@@ -35,3 +35,8 @@ WISTIA_ACCESS_TOKEN="your access token goes here" terraform plan
 
 The video files aren't included in this repository, so you'll need to edit the file paths to point at something on your
 computer or upload by URL instead.
+
+## Disclaimer
+
+This provider is offered as-is, with no guarantee of support or bug fixes. If you find it useful, though, we'd love to
+hear from you. Please open an issue and let us know how you're using Terraform with Wistia.
