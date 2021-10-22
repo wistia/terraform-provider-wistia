@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+func init() {
+	schema.DescriptionKind = schema.StringMarkdown
+}
+
 func New() func() *schema.Provider {
 	return func() *schema.Provider {
 		return &schema.Provider{
