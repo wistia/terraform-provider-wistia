@@ -36,6 +36,31 @@ jobs:
       - name: Run vet
         run: go vet ./...
 
+  docs:
+    name: Check documentation freshness
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Set up Go 1.17
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.17
+      - name: Check out
+        uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - run: |
+          go generate
+
+          if ! git diff --quiet; then
+            echo "The documentation has changed. Please run `go generate` and commit the changes."
+            exit 1
+          fi
+
   build:
     name: Build
     runs-on: ubuntu-20.04
