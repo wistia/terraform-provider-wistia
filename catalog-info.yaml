@@ -1,0 +1,16 @@
+# this is a catalog entity descriptor file for our Backstage instance (https://backstage.wistia.cloud)
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Terraform-Provider-Wistia
+  description: Wistia media as code
+  annotations:
+    github.com/project-slug: wistia/terraform-provider-wistia
+    backstage.io/techdocs-ref: dir:.
+  spec:
+    type: configuration
+    owner: infrastructure
+    lifecycle: experimental
+  tags:
+    - lang#go
