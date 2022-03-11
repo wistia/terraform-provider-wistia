@@ -8,9 +8,9 @@ metadata:
   annotations:
     github.com/project-slug: wistia/terraform-provider-wistia
     backstage.io/techdocs-ref: dir:.
-  spec:
-    type: configuration
-    owner: infrastructure
-    lifecycle: experimental
   tags:
     - lang#go
+spec:
+  type: configuration
+  owner: infrastructure
+  lifecycle: experimental
