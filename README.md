@@ -10,10 +10,17 @@ the heavy lifting.
 
 ## Getting started
 
-First, install Terraform:
+First, install Terraform and the Just command runner:
 
 ```
-brew install terraform
+brew install terraform && \
+brew install just
+```
+
+And build the Terraform provider:
+
+```
+just install
 ```
 
 Then, look through the examples and create your own configuration in a file like `lenny_learns_terraform.tf`. See the
