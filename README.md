@@ -24,15 +24,15 @@ just install
 ```
 
 Then, look through the examples and create your own configuration in a file like `lenny_learns_terraform.tf`. See the
-[docs](docs) directory for information about supported resources and options. 
+[docs](docs) directory for information about supported resources and options.
 
 See the [Terraform docs](https://www.terraform.io/docs/language/index.html) for details about the language and how to
 create resource configurations.
 
 ## Examples
 
-The [examples](examples) directory has working configuration examples that you can use to create projects and media. You'll need 
-to have an access token for your Wistia account (Account -> Settings -> API Access) that has read, update, delete, and 
+The [examples](examples) directory has working configuration examples that you can use to create projects and media. You'll need
+to have an access token for your Wistia account (Account -> Settings -> API Access) that has read, update, delete, and
 upload permissions. Drop that token into the commands below, as indicated.
 
 ```
