@@ -10,14 +10,25 @@ the heavy lifting.
 
 ## Getting started
 
-First, install Terraform and the Just command runner:
+### Prerequisites
+
+You'll need these tools to be installed:
+
+- Go compiler toolchain (1.14 or newer)
+- [Terraform](https://terraform.io)
+- [Just](https://github.com/casey/just) command runner
+
+If you're on macOS, Homebrew is a good way to install these:
 
 ```
-brew install terraform && \
-brew install just
+brew install golang terraform just
 ```
 
-And build the Terraform provider:
+For other systems, please use your favorite package manager.
+
+### Building and using the provider
+
+Build the provider and install it in ~/.terraform.d` where Terraform expects to find it:
 
 ```
 just install
