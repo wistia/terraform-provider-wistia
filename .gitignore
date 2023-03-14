@@ -1,5 +1,6 @@
 **/*.tf
 **/*.tfstate*
+**/.terraform
 terraform-provider-wistia
 crash.log
-.terraform
+
