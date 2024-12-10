@@ -16,8 +16,8 @@ jobs:
         with:
           go-version: 1.17
       - name: Check out
-        uses: actions/checkout@v2
-      - uses: actions/cache@v2
+        uses: actions/checkout@v4
+      - uses: actions/cache@v4
         with:
           path: |
             ~/go/pkg/mod
@@ -45,8 +45,8 @@ jobs:
         with:
           go-version: 1.17
       - name: Check out
-        uses: actions/checkout@v2
-      - uses: actions/cache@v2
+        uses: actions/checkout@v4
+      - uses: actions/cache@v4
         with:
           path: |
             ~/go/pkg/mod
@@ -75,8 +75,8 @@ jobs:
       - name: Install just
         uses: extractions/setup-just@aa5d15c144db4585980a44ebfdd2cf337c4f14cb # v1.4.0
       - name: Check out
-        uses: actions/checkout@v2
-      - uses: actions/cache@v2
+        uses: actions/checkout@v4
+      - uses: actions/cache@v4
         with:
           path: |
             ~/go/pkg/mod
